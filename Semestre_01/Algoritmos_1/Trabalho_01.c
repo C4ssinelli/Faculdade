@@ -1,4 +1,4 @@
-//colocar se tem ou n�o fra��o, se tem ou n�o pi
+// Trabalho para o cálculo de várias relações entre ângulos, como seno e cosseno
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
