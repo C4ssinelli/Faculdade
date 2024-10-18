@@ -1,0 +1,20 @@
+Ola Usuario! 
+
+Este eh o arquivo de ajuda. 
+Este arquivo eh criptografado, e descriptografado pele proprio programa (main). 
+
+Antes de tudo, eh de extrema importancia, que esse arquivo (main)
+seja aberto como Administrador, para as funcoes funcionarem. 
+Caso contrario, algumas funcoes podem dar erro de permisao. 
+
+Para abrir como administrador, clique com o botao direito do mouse,
+clique em "Abrir como administrador" e usufrua de nosso programa! 
+
+Para navegar pelo menu de nosso programa, utilize as Arrow Keys 
+(Setinhas do Teclado), assim ficara mais facil sua navegacao. 
+
+Este programa cria e modifica pastas e arquivos, entao, cuidado ao deletar pastas ou arquivos
+importantes, como as criadas pelo seu Sistema Operacional. 
+
+
+Este programa foi criado por: Alex Luiz Domingues Cassinelli e Matheus Herminio Da Silva
