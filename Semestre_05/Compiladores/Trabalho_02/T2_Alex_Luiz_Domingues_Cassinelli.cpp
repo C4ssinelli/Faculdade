@@ -4,6 +4,12 @@
 // Linguagem: C++ (utilizado pela facilidade de manipulacao de strings)
 // Compilador: g++, usando o WSL
 
+/*
+	Este trabalho é um analisador sintático simples, sendo capaz de analisar caso
+ 	aja algum erro sintático no código, ou seja, comandos que tenham sua estrutura
+  	violada.
+*/
+
 /* Tabelas utilizadas, para facilitar a compreensao
 
 	Tabela de Simbolos Especiais:
