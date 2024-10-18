@@ -1,0 +1,12 @@
+  Estes são os códigos do protocolo AOMDV, como implementados pelo NS-2. Como parte do meu TCC, 
+foi necessário fazer algumas modificações nestes códigos. Meu TCC tem o objetivo de verificar uma alternativa para
+evitar algumas das consequências de um Black Hole Attack, um ataque cibernético que acomete redes móveis ad-hoc (MANETs).
+
+  Primeiramente, uma breve explicação: O AOMDV é um protocolo de roteamento Ad-hoc, para redes móveis e sem fio.
+Sua função é encontrar a rota pela qual a comunicação se dará entre os nós. Ele é um protocolo baseado no conceito
+da BFS, enviando pacotes de descobrimento de rota para todos os nós simultaneamente. Após, ele escolhe o melhor
+caminho que ele encontrou e envia os pacotes de dados.
+
+  A intenção das modificações é converter o AOMDV para um protocolo que se utiliza do conceito da DFS, além disso,
+ele deverá enviar os pacotes por dois caminhos diferentes. Assim, evitando a principal consequência do Black Hole:
+a negação de serviço.
