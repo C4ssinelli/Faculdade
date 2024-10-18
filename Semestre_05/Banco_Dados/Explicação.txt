@@ -1,4 +1,5 @@
-  Este trabalho foi desenvolvido em conjunto com 
+  Este trabalho foi desenvolvido em conjunto com Matheus Herminio da Silva, Kaio Henrique Avelino Domeni de Paulo e
+Vinicius Rodrigues de Souza Fiedler Garcia.
 
   Este trabalho é o trabalho final da matéria de Banco de Dados I, apresentando um BD funcional, normalizado na 2FN.
 Ele é um banco de dados construído para ser utilizado em uma loja de armamentos, envolvendo algumas tabelas, como
