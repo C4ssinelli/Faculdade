@@ -1,14 +1,14 @@
 // Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
 // As modificações se encontram nas seguintes linhas:
 /*
-	223		-> Inicialização da pilha de vizinhos;
- 	704 - 732	-> Função para auxílio durante a programação;
-  	1414 - 1417	-> Parte da lógica de múltiplos caminhos;
-   	1452 - 1466	-> Parte da lógica de múltiplos caminhos;
-    	1536 - 1635;	-> Função modificada para envio por DFS;
-    	1756		-> Inserção na pilha de vizinhos;
-     	1762 - 1787 	-> Métodos para manipulação da pilha de vizinhos;
-      	1802 - 1844 	-> Métodos para manipulação da pilha de vizinhos;
+	237		-> Inicialização da pilha de vizinhos;
+ 	706 - 734	-> Função para auxílio durante a programação;
+  	1417 - 1419	-> Parte da lógica de múltiplos caminhos;
+   	1452 - 1468	-> Parte da lógica de múltiplos caminhos;
+    	1526 - 1625	-> Função modificada para envio por DFS;
+    	1759		-> Inserção na pilha de vizinhos;
+     	1765 - 1790 	-> Métodos para manipulação da pilha de vizinhos;
+      	1805 - 1847 	-> Métodos para manipulação da pilha de vizinhos;
 */
 
 /*
@@ -307,17 +307,6 @@ AOMDVLocalRepairTimer::handle(Event* p)  {  // SRD: 5/4/99
 	}
 	Packet::free((Packet *)p);
 }
-
-// ------------------------------------------------------------------
-// adicionado por alex cassinelli
-/*void
-DFSTimer::handle(Event* p)
-{
-	//Packet *pacote = (Packet *)p;
-	printf("Chamou com sucesso!\n");
-	Scheduler::instance().schedule(this, p, 0.);
-}*/
-// ------------------------------------------------------------------
 
 /*
  Broadcast ID Management  Functions
@@ -1764,10 +1753,11 @@ AOMDV::nb_insert(nsaddr_t id) {
 		// CHANGE
 		nb->nb_expire = CURRENT_TIME + (HELLO_INTERVAL * ALLOWED_HELLO_LOSS);
 	}
-	
+
+	// ------------------------------------------------------------------
 	// adicionado por alex cassinelli - fila_vizinhos
 	fv_insere(id);
-	//fv_imprime();
+	// ------------------------------------------------------------------
 }
 
 // ------------------------------------------------------------------
@@ -1786,8 +1776,6 @@ AOMDV::fv_insere(nsaddr_t id)
 	}
 }
 
-// ------------------------------------------------------------------
-// adicionado por alex cassinelli - fila_vizinhos
 void
 AOMDV::nb_print(nsaddr_t id) {
 	AOMDV_Neighbor *nb = nbhead.lh_first;
