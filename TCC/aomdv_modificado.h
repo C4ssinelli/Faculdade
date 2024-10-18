@@ -1,8 +1,8 @@
 // Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
 // As modificações se encontram nas seguintes linhas:
 /*
- 	384 - 390	-> Funções da pilha de vizinhos;
-  	446		-> Declaração da pilha de vizinhos;
+ 	392 - 397	-> Funções da pilha de vizinhos;
+  	454		-> Declaração da pilha de vizinhos;
 */
 
 /*
