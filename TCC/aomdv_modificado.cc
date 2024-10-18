@@ -1,3 +1,16 @@
+// Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
+// As modificações se encontram nas seguintes linhas:
+/*
+	223		-> Inicialização da pilha de vizinhos;
+ 	704 - 732	-> Função para auxílio durante a programação;
+  	1414 - 1417	-> Parte da lógica de múltiplos caminhos;
+   	1452 - 1466	-> Parte da lógica de múltiplos caminhos;
+    	1536 - 1635;	-> Função modificada para envio por DFS;
+    	1756		-> Inserção na pilha de vizinhos;
+     	1762 - 1787 	-> Métodos para manipulação da pilha de vizinhos;
+      	1802 - 1844 	-> Métodos para manipulação da pilha de vizinhos;
+*/
+
 /*
  * Copyright (c) 2008, Marcello Caleffi, <marcello.caleffi@unina.it>,
  * http://wpage.unina.it/marcello.caleffi
@@ -1519,145 +1532,8 @@ AOMDV::forward(aomdv_rt_entry *rt, Packet *p, double delay) {
 	
 }
 
-/*void
-AOMDV::sendRequest(nsaddr_t dst) {
-	// Allocate a RREQ packet 
-	Packet *p = Packet::alloc();
-	struct hdr_cmn *ch = HDR_CMN(p);
-	struct hdr_ip *ih = HDR_IP(p);
-	struct hdr_aomdv_request *rq = HDR_AOMDV_REQUEST(p);
-	aomdv_rt_entry *rt = rtable.rt_lookup(dst);
-	assert(rt);
-	
-	
-	 *  Rate limit sending of Route Requests. We are very conservative
-	 *  about sending out route requests. 
-	 
-	
-	if (rt->rt_flags == RTF_UP) {
-		assert(rt->rt_hops != INFINITY2);
-		Packet::free((Packet *)p);
-		return;
-	}
-	
-	if (rt->rt_req_timeout > CURRENT_TIME) {
-		Packet::free((Packet *)p);
-		return;
-	}
-	
-	// rt_req_cnt is the no. of times we did network-wide broadcast
-	// RREQ_RETRIES is the maximum number we will allow before 
-	// going to a long timeout.
-	
-	if (rt->rt_req_cnt > RREQ_RETRIES) {
-		rt->rt_req_timeout = CURRENT_TIME + MAX_RREQ_TIMEOUT;
-		rt->rt_req_cnt = 0;
-		Packet *buf_pkt;
-		while ((buf_pkt = rqueue.deque(rt->rt_dst))) {
-			drop(buf_pkt, DROP_RTR_NO_ROUTE);
-		}
-		Packet::free((Packet *)p);
-		return;
-	}
-	
-#ifdef DEBUG
-   fprintf(stderr, "(%2d) - %2d sending Route Request, dst: %d\n",
-			  ++route_request, index, rt->rt_dst);
-#endif // DEBUG
-	
-	// Determine the TTL to be used this time. 
-	// Dynamic TTL evaluation - SRD
-	
-	rt->rt_req_last_ttl = max(rt->rt_req_last_ttl,rt->rt_last_hop_count);
-	
-	if (0 == rt->rt_req_last_ttl) {
-		// first time query broadcast
-		ih->ttl_ = TTL_START;
-	}
-	else {
-		// Expanding ring search.
-		if (rt->rt_req_last_ttl < TTL_THRESHOLD)
-			ih->ttl_ = rt->rt_req_last_ttl + TTL_INCREMENT;
-		else {
-			// network-wide broadcast
-			ih->ttl_ = NETWORK_DIAMETER;
-			rt->rt_req_cnt += 1;
-		}
-	}
-	
-	// remember the TTL used  for the next time
-	rt->rt_req_last_ttl = ih->ttl_;
-	
-	// PerHopTime is the roundtrip time per hop for route requests.
-	// The factor 2.0 is just to be safe .. SRD 5/22/99
-	// Also note that we are making timeouts to be larger if we have 
-	// done network wide broadcast before. 
-	
-	rt->rt_req_timeout = 2.0 * (double) ih->ttl_ * PerHopTime(rt); 
-	if (rt->rt_req_cnt > 0)
-		rt->rt_req_timeout *= rt->rt_req_cnt;
-	rt->rt_req_timeout += CURRENT_TIME;
-	
-	// Don't let the timeout to be too large, however .. SRD 6/8/99
-	if (rt->rt_req_timeout > CURRENT_TIME + MAX_RREQ_TIMEOUT)
-		rt->rt_req_timeout = CURRENT_TIME + MAX_RREQ_TIMEOUT;
-	rt->rt_expire = 0;
-	
-#ifdef DEBUG
-	fprintf(stderr, "(%2d) - %2d sending Route Request, dst: %d, tout %f ms\n",
-			  ++route_request, 
-			  index, rt->rt_dst, 
-			  rt->rt_req_timeout - CURRENT_TIME);
-#endif	// DEBUG
-	
-	
-	// Fill out the RREQ packet 
-	// ch->uid() = 0;
-	ch->ptype() = PT_AOMDV;
-	ch->size() = IP_HDR_LEN + rq->size();
-	ch->iface() = -2;
-	ch->error() = 0;
-	ch->addr_type() = NS_AF_NONE;
-	ch->prev_hop_ = index;          // AODV hack
-	
-	ih->saddr() = index;
-	
-
-	
-	//ih->daddr() = IP_BROADCAST;
-	
-	//nb_print(index);
-	// -----------------------------------------------------------------
-	// adicionado por alex cassinelli - Fila_Vizinhos
-	ih->daddr() = fv_retorna_ultimo();
-	
-	//nsaddr_t end = fv_retorna_primeiro();
-	
-	//printf("Endereço retornado: %d\n", end);
-	
-	
-	// -----------------------------------------------------------------
-	
-	ih->sport() = RT_PORT;
-	ih->dport() = RT_PORT;
-	
-	// Fill up some more fields. 
-	rq->rq_type = AOMDVTYPE_RREQ;
-	// AOMDV code
-	rq->rq_hop_count = 0;
-	rq->rq_bcast_id = bid++;
-	rq->rq_dst = dst;
-	rq->rq_dst_seqno = (rt ? rt->rt_seqno : 0);
-	rq->rq_src = index;
-	seqno += 2;
-	assert ((seqno%2) == 0);
-	rq->rq_src_seqno = seqno;
-	rq->rq_timestamp = CURRENT_TIME;
-	
-	Scheduler::instance().schedule(target_, p, 0.);
-	
-}*/
-
+// -----------------------------------------------------------------
+// adicionado por alex cassinelli - Caminho Secundário
 void
 AOMDV::sendRequest(nsaddr_t dst) {
 	aomdv_rt_entry *rt = rtable.rt_lookup(dst);
@@ -1758,6 +1634,7 @@ AOMDV::sendReply(nsaddr_t ipdst, u_int32_t hop_count, nsaddr_t rpdst,
 	Scheduler::instance().schedule(target_, p, 0.);
 	
 }
+// -----------------------------------------------------------------
 
 void
 AOMDV::sendError(Packet *p, bool jitter) {
