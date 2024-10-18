@@ -1,4 +1,4 @@
-#Funcional!
+# Este código criptografa o texto do arquivo presa.txt
 
 import os
 import time
