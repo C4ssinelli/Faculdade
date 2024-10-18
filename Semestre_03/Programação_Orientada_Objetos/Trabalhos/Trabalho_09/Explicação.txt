@@ -1,0 +1,4 @@
+  Este trabalho é um banco de dados rudimentar, feito para uma hipotética cafeteria. 
+Ele insere elementos com quatro campos: Produto, Quantidade, Custo e Preço. Além disso,
+Este BD é capaz de consultar as linhas da tabela, para mostrar os produtos inseridos,
+porém, ele mostra a tabela como um todo, ao invés de apenas um produto.
