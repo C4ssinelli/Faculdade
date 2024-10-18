@@ -1,3 +1,12 @@
+// Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
+// As modificações se encontram nas seguintes linhas:
+/*
+ 	133		-> Inicia a estrutura da pilha de vizinhos;
+  	192 - 214	-> Funções auxiliares à pilha de vizinhos;
+  	396 - 403	-> Função para encontrar o segundo caminho para enviar os pacotes;
+*/
+
+
 /*
  * Copyright (c) 2008, Marcello Caleffi, <marcello.caleffi@unina.it>,
  * http://wpage.unina.it/marcello.caleffi
@@ -121,9 +130,11 @@ int i;
 
  LIST_INIT(&rt_nblist);
  
- // adicionado por alex cassinelli
+// ------------------------------------------------------------------
+// adicionado por alex cassinelli
  TAILQ_INIT(&rt_fvqueue);
-
+// ------------------------------------------------------------------
+	
 }
 
 
@@ -179,7 +190,8 @@ AOMDV_Neighbor *nb = rt_nblist.lh_first;
 
 }
 
-// adicionado por alex cassinelli
+// ------------------------------------------------------------------
+// adicionado por Alex Cassinelli
 void
 aomdv_rt_entry::fv_insere(nsaddr_t id)
 {
@@ -203,6 +215,7 @@ aomdv_rt_entry::fv_retorna_primeiro()
  return fv;*/
 
 }
+// ------------------------------------------------------------------
 
 // AOMDV code
 AOMDV_Path*
@@ -382,7 +395,8 @@ AOMDV_Path *p = rt_path_list.lh_first;
 
    return p;
 }
-
+// ------------------------------------------------------------------
+// adicionado por Alex Cassinelli
 AOMDV_Path*
 aomdv_rt_entry::next_path_find(void) {
 AOMDV_Path *p = rt_path_list.lh_first;
@@ -391,6 +405,7 @@ AOMDV_Path *p = rt_path_list.lh_first;
 
    return p;
 }
+// ------------------------------------------------------------------
 
 u_int16_t
 aomdv_rt_entry::path_get_max_hopcount(void)
