@@ -1,0 +1,5 @@
+  Este trabalho foi desenvolvido em conjunto com 
+
+  Este trabalho é o trabalho final da matéria de Banco de Dados I, apresentando um BD funcional, normalizado na 2FN.
+Ele é um banco de dados construído para ser utilizado em uma loja de armamentos, envolvendo algumas tabelas, como
+a tabela de produto e estoque.
