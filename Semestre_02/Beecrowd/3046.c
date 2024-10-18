@@ -1,4 +1,4 @@
-/*Eu pegeui a formula dada pelo exercicio e a escrevi igualando a uma variavel.*/
+/*Neste exercício basta escrever a fórmula dada*/
 #include <stdio.h>
 int main ()
 {
