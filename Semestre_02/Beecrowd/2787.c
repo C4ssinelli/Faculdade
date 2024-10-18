@@ -1,6 +1,6 @@
-/*Eu percebi que o que define se a última casa será preta ou branca, 
-é se a soma das linhas e colunas é par ou ímpar, então usei uma variável para soma,
-e os ifs para conferir e responder de acordo.*/
+/*O que define se a última casa será preta ou branca, é se a soma das linhas e 
+colunas é par ou ímpar, então usei uma variável para soma, e os ifs para conferir 
+e responder de acordo.*/
 #include <stdio.h>
 int main ()
 {
