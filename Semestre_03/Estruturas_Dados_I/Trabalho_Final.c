@@ -8,8 +8,8 @@
 */
 
 //Feito por:
-//Nome: Alex Cassinelli, RA: 211021849
-//Nome: Vinicius Garcia, RA: 211020681
+//Nome: Alex Luiz Domingues Cassinelli, RA: 211021849
+//Nome: Vinicius Rodrigues de Souza Fiedler Garcia, RA: 211020681
 
 #include <stdio.h>
 #include <windows.h>
