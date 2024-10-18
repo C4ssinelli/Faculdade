@@ -1,10 +1,10 @@
 // Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
 // As modificações se encontram nas seguintes linhas:
 /*
- 	112 - 123	-> Declaração da classe Fila_Vizinhos, que será utilizada para a realização da DFS, funcionando como pilha;
-  	203 - 204	-> Funções da pilha de vizinhos;
-   	223		-> Função para descobrimento do segundo caminho, para enviar o pacote por um caminho auxiliar;
-    	240		-> Declaração de uma estrutura para a criação da pilha de vizinhos;
+ 	123 - 136	-> Declaração da classe Fila_Vizinhos, que será utilizada para a realização da DFS, funcionando como pilha;
+  	214 - 216	-> Funções da pilha de vizinhos;
+   	236		-> Função para descobrimento do segundo caminho, para enviar o pacote por um caminho auxiliar;
+    	302		-> Declaração de uma estrutura para a criação da pilha de vizinhos;
 */
 
 
@@ -118,6 +118,7 @@ protected:
 
 LIST_HEAD(aomdv_ncache, AOMDV_Neighbor);
 
+// ------------------------------------------------------------------
 // adicionado por alex cassinelli
 class Fila_Vizinhos
 {
@@ -133,6 +134,7 @@ class Fila_Vizinhos
 };
 
 TAILQ_HEAD(fv_ncache, Fila_Vizinhos);
+// ------------------------------------------------------------------
 
  // AOMDV code
 /*
