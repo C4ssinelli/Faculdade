@@ -2,7 +2,17 @@
 // RA: 211021849
 // Sistema Operacional: Windows 7 Professional
 // Linguagem: C++ (utilizado pela facilidade de manipulacao de strings)
-// Compilador: Dev-C++ (vers�o 5.11)
+// Compilador: Dev-C++ (versão 5.11)
+
+/* 
+	Este código trata-se de um analisador léxico simples, para a linguagem Pascal.
+	Ele é capaz de verificar se existem símbolos e letras não reconhecíveis, assim
+	como reconhecimento do uso de palavras reservadas. Porém, ele não reconhece
+ 	os tipos real e char, declarações de constantes, além de tipos, registros
+  	apontadores e arquivos.
+
+   	
+*/
 
 /* Tabelas utilizadas, para facilitar a compreensao
 
