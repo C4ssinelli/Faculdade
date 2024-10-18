@@ -1,3 +1,10 @@
+// Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
+// As modificações se encontram nas seguintes linhas:
+/*
+ 	384 - 390	-> Funções da pilha de vizinhos;
+  	446		-> Declaração da pilha de vizinhos;
+*/
+
 /*
  * Copyright (c) 2008, Marcello Caleffi, <marcello.caleffi@unina.it>,
  * http://wpage.unina.it/marcello.caleffi
@@ -243,20 +250,6 @@ private:
    Event intr;
 };
 
-// ------------------------------------------------------------------
-// adicionado por alex cassinelli
-/*class DFSTimer : public Handler
-{
-	public:	
-   		DFSTimer(AOMDV* agent) : agent(agent) {}
-   		virtual void handle(Event*);
-   		
-   	private:
-   		AOMDV *agent;
-   		
-};*/
-// ------------------------------------------------------------------
-
 // AOMDV code
 /*
   Route List
@@ -338,20 +331,6 @@ protected:
 				return NULL;
 			}
 	
-	// ------------------------------------------------------------------
-	// adicionado por alex cassinelli - fila_vizinhos
-	void print_path()
-	{
-		AOMDV_Route *route = forward_path_list.lh_first;
-		
-		// printar todos os ids
-		for( ; route; route = route->route_link.le_next)
-		{
-			printf("Próximo nó: %d\n", route->nh_addr);
-		}
-		printf("\n");
-	}
-	// ------------------------------------------------------------------
 };
 
 LIST_HEAD(aomdv_bcache, AOMDVBroadcastID);
@@ -371,11 +350,6 @@ class AOMDV: public Agent {
         friend class AOMDVNeighborTimer;
         friend class AOMDVRouteCacheTimer;
         friend class AOMDVLocalRepairTimer;
-        
-        // ------------------------------------------------------------------
-        // adicionado por alex cassinelli
-        // friend class DFSTimer;
-        // ------------------------------------------------------------------
 
  public:
         AOMDV(nsaddr_t id);
@@ -398,11 +372,6 @@ class AOMDV: public Agent {
 			// void            rt_update(aodv_rt_entry *rt, u_int32_t seqnum, u_int16_t metric, nsaddr_t nexthop, double expire_time);
 			// void            handle_link_failure(nsaddr_t id);
         void            handle_link_failure(nsaddr_t id);
-        
-        // ------------------------------------------------------------------
-	// adicionado por alex cassinelli - fila_vizinhos
-	void rt_print(nsaddr_t id);
-	// ------------------------------------------------------------------
         
  protected:
         void            rt_purge(void);
@@ -493,11 +462,6 @@ class AOMDV: public Agent {
         AOMDVNeighborTimer   ntimer;
         AOMDVRouteCacheTimer rtimer;
         AOMDVLocalRepairTimer lrtimer;
-        
-        // ------------------------------------------------------------------
-        // adicionado por alex cassinelli - fila_vizinhos
-        // DFSTimer	dfstimer;
-        // ------------------------------------------------------------------
 
         /*
          * Routing Table
