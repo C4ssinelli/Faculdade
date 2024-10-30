@@ -1,8 +1,8 @@
 // Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
 // As modificações se encontram nas seguintes linhas:
 /*
-	396 - 403	-> Funções de manipulação da pilha de vizinhos
-	454		-> Declaração da pilha de vizinhos
+	396 - 403
+	454	
 
 
  * Copyright (c) 2008, Marcello Caleffi, <marcello.caleffi@unina.it>,
