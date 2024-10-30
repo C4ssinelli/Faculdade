@@ -1,14 +1,11 @@
 // Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
 // As modificações se encontram nas seguintes linhas:
 /*
- 	123 - 136	-> Declaração da classe Fila_Vizinhos, que será utilizada para a realização da DFS, funcionando como pilha;
-  	214 - 216	-> Funções da pilha de vizinhos;
-   	236		-> Função para descobrimento do segundo caminho, para enviar o pacote por um caminho auxiliar;
-    	302		-> Declaração de uma estrutura para a criação da pilha de vizinhos;
-*/
+ 	120 - 133
+  	212
+   	233
+    	298
 
-
-/*
  * Copyright (c) 2008, Marcello Caleffi, <marcello.caleffi@unina.it>,
  * http://wpage.unina.it/marcello.caleffi
  *
@@ -118,7 +115,7 @@ protected:
 
 LIST_HEAD(aomdv_ncache, AOMDV_Neighbor);
 
-// ------------------------------------------------------------------
+/ ------------------------------------------------------------------
 // adicionado por alex cassinelli
 class Fila_Vizinhos
 {
@@ -211,9 +208,8 @@ class aomdv_rt_entry {
         AOMDV_Neighbor*  nb_lookup(nsaddr_t id);
         
         // ------------------------------------------------------------------
-	// adicionado por alex cassinelli - fila_vizinhos
+	// adicionado por alex cassinelli
 	void	fv_insere(nsaddr_t id);
-	void	fv_retorna_primeiro();
 	// ------------------------------------------------------------------
         
 
@@ -232,7 +228,7 @@ class aomdv_rt_entry {
         bool         path_empty(void);                   // is the path list empty?
         AOMDV_Path*   path_find(void);                    // find the path that we got first
         // ------------------------------------------------------------------
-	// adicionado por alex cassinelli - fila_vizinhos
+	// adicionado por alex cassinelli
         AOMDV_Path*   next_path_find(void);		// find the second path
         // ------------------------------------------------------------------
         AOMDV_Path*   path_findMinHop(void);              // find the shortest path
