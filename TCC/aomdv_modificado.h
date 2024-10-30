@@ -1,11 +1,10 @@
 // Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
 // As modificações se encontram nas seguintes linhas:
 /*
- 	392 - 397	-> Funções da pilha de vizinhos;
-  	454		-> Declaração da pilha de vizinhos;
-*/
+	396 - 403	-> Funções de manipulação da pilha de vizinhos
+	454		-> Declaração da pilha de vizinhos
 
-/*
+
  * Copyright (c) 2008, Marcello Caleffi, <marcello.caleffi@unina.it>,
  * http://wpage.unina.it/marcello.caleffi
  *
@@ -330,7 +329,6 @@ protected:
 				}
 				return NULL;
 			}
-	
 };
 
 LIST_HEAD(aomdv_bcache, AOMDVBroadcastID);
@@ -388,13 +386,15 @@ class AOMDV: public Agent {
         void            nb_purge(void);
         
         // ------------------------------------------------------------------
-        // adicionado por alex cassinelli - vizinhos_original
+        // adicionado por alex cassinelli
         void 		nb_print(nsaddr_t id);
         
         void		fv_insere(nsaddr_t id);
         Fila_Vizinhos*	fv_lookup(nsaddr_t id);
         nsaddr_t	fv_retorna_ultimo();
         void		fv_imprime();
+        
+        bool		malicious;
 	// ------------------------------------------------------------------
 
         /*
@@ -450,7 +450,7 @@ class AOMDV: public Agent {
         aomdv_bcache          bihead;                 // Broadcast ID Cache
         
         // ------------------------------------------------------------------
-        // adicionado por alex cassinelli - fila_vizinhos
+        // adicionado por alex cassinelli
         fv_ncache 	     fv_cabeca;
 	// ------------------------------------------------------------------
 
