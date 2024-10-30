@@ -1,13 +1,10 @@
 // Este código foi modificado por Alex Cassinelli, e não foi criado inteiramente por mim.
 // As modificações se encontram nas seguintes linhas:
 /*
- 	133		-> Inicia a estrutura da pilha de vizinhos;
-  	192 - 214	-> Funções auxiliares à pilha de vizinhos;
-  	396 - 403	-> Função para encontrar o segundo caminho para enviar os pacotes;
-*/
+      133	
+      190 - 198	
 
 
-/*
  * Copyright (c) 2008, Marcello Caleffi, <marcello.caleffi@unina.it>,
  * http://wpage.unina.it/marcello.caleffi
  *
@@ -129,14 +126,13 @@ int i;
  rt_req_last_ttl = 0;
 
  LIST_INIT(&rt_nblist);
- 
-// ------------------------------------------------------------------
-// adicionado por alex cassinelli
- TAILQ_INIT(&rt_fvqueue);
-// ------------------------------------------------------------------
-	
-}
 
+ // ------------------------------------------------------------------
+ // adicionado por alex cassinelli
+ TAILQ_INIT(&rt_fvqueue);
+
+}
+// ------------------------------------------------------------------
 
 aomdv_rt_entry::~aomdv_rt_entry()
 {
@@ -189,9 +185,8 @@ AOMDV_Neighbor *nb = rt_nblist.lh_first;
  return nb;
 
 }
-
 // ------------------------------------------------------------------
-// adicionado por Alex Cassinelli
+// adicionado por alex cassinelli
 void
 aomdv_rt_entry::fv_insere(nsaddr_t id)
 {
@@ -200,23 +195,7 @@ aomdv_rt_entry::fv_insere(nsaddr_t id)
 	assert(fv);
 	TAILQ_INSERT_TAIL(&rt_fvqueue, fv, fv_link);
 }
-
-void
-aomdv_rt_entry::fv_retorna_primeiro()
-{
-	Fila_Vizinhos *fv = rt_fvqueue.tqh_first;
-
-	printf("%d", fv->fv_endereco);
-
- /*for(; fv; fv = fv->fv_link.le_next) {
-   if(fv->fv_addr == id)
-     break;
- }
- return fv;*/
-
-}
 // ------------------------------------------------------------------
-
 // AOMDV code
 AOMDV_Path*
 aomdv_rt_entry::path_insert(nsaddr_t nexthop, u_int16_t hopcount, double expire_time, nsaddr_t lasthop) {
@@ -395,8 +374,7 @@ AOMDV_Path *p = rt_path_list.lh_first;
 
    return p;
 }
-// ------------------------------------------------------------------
-// adicionado por Alex Cassinelli
+
 AOMDV_Path*
 aomdv_rt_entry::next_path_find(void) {
 AOMDV_Path *p = rt_path_list.lh_first;
@@ -405,7 +383,6 @@ AOMDV_Path *p = rt_path_list.lh_first;
 
    return p;
 }
-// ------------------------------------------------------------------
 
 u_int16_t
 aomdv_rt_entry::path_get_max_hopcount(void)
