@@ -2,16 +2,14 @@
 // As modificações se encontram nas seguintes linhas:
 /*
 	237		-> Inicialização da pilha de vizinhos;
- 	706 - 734	-> Função para auxílio durante a programação;
-  	1417 - 1419	-> Parte da lógica de múltiplos caminhos;
-   	1452 - 1468	-> Parte da lógica de múltiplos caminhos;
+	706 - 734	-> Função para auxílio durante a programação;
+	1417 - 1419	-> Parte da lógica de múltiplos caminhos;
+	1452 - 1468	-> Parte da lógica de múltiplos caminhos;
     	1526 - 1625	-> Função modificada para envio por DFS;
     	1759		-> Inserção na pilha de vizinhos;
      	1765 - 1790 	-> Métodos para manipulação da pilha de vizinhos;
       	1805 - 1847 	-> Métodos para manipulação da pilha de vizinhos;
-*/
 
-/*
  * Copyright (c) 2008, Marcello Caleffi, <marcello.caleffi@unina.it>,
  * http://wpage.unina.it/marcello.caleffi
  *
@@ -154,6 +152,16 @@ AOMDV::command(int argc, const char*const* argv) {
 			tcl.resultf("%d", index);
 			return TCL_OK;
 		}
+		
+		// ------------------------------------------------------------------
+		// adicionado por alex cassinelli
+		if(strcmp(argv[1], "malicious") == 0)
+		{
+			malicious = true;
+			return TCL_OK;
+		}
+		// ------------------------------------------------------------------
+		
 		// AOMDV code - should it be removed?
 		if (strncasecmp(argv[1], "dump-table", 10) == 0) {
 			printf("Node %d: Route table:\n", index);
@@ -233,8 +241,9 @@ rtimer(this), lrtimer(this), rqueue() {
 	LIST_INIT(&bihead);
 	
 	// ------------------------------------------------------------------
-	// adicionado por alex cassinelli - fila_vizinhos
+	// adicionado por alex cassinelli
 	TAILQ_INIT(&fv_cabeca);
+	malicious = false;
 	// ------------------------------------------------------------------
 	logtarget = 0;
 	AOMDVifqueue = 0;
@@ -591,6 +600,15 @@ AOMDV::rt_resolve(Packet *p) {
 	struct hdr_ip *ih = HDR_IP(p);
 	aomdv_rt_entry *rt;
 	
+	// ------------------------------------------------------------------
+	// adicionado por alex cassinelli
+	if(malicious == true)
+	{
+		drop(p, DROP_MAL);
+		return;
+	}
+	// ------------------------------------------------------------------
+	
 	/*
 	 *  Set the transmit failure callback.  That
 	 *  won't change.
@@ -723,10 +741,6 @@ AOMDV::rt_print(nsaddr_t id)
 		}
 		fprintf(fp, "\n");
 	}
-	
-	/*for (rt=rtable.head();rt; rt = rt->rt_link.le_next) {
-	fprintf(fp, "NODE: %i %f %i %i %i %f %d 							\n", id, CURRENT_TIME, rt->rt_dst, rt->rt_last_hop_count, rt->rt_seqno, rt->rt_expire, rt->rt_flags);
-}*/
 	
 	fprintf(fp, "\n");
 	
@@ -894,7 +908,6 @@ AOMDV::recvRequest(Packet *p) {
 		rt0->rt_advertised_hops = INFINITY;
 		rt0->path_delete(); // Delete all previous paths to RREQ source 
 		rt0->rt_flags = RTF_UP;
-		
 		/* Insert new path for route entry to source of RREQ. 
 			(src addr, hop count + 1, lifetime, last hop (first hop for RREQ)) */
 		reverse_path = rt0->path_insert(ih->saddr(), rq->rq_hop_count+1, CURRENT_TIME + REV_ROUTE_LIFE, rq->rq_first_hop);
@@ -930,7 +943,6 @@ AOMDV::recvRequest(Packet *p) {
 			if ( (rt0->rt_num_paths_ < aomdv_max_paths_) &&
 				  (((rq->rq_hop_count + 1) - rt0->path_get_min_hopcount()) <= aomdv_prim_alt_path_len_diff_)
 				  ) {
-				
 				/* Insert new (disjoint) reverse path */
 				reverse_path = rt0->path_insert(ih->saddr(), rq->rq_hop_count+1, CURRENT_TIME + REV_ROUTE_LIFE, rq->rq_first_hop);
 				// CHANGE
@@ -1008,6 +1020,25 @@ AOMDV::recvRequest(Packet *p) {
 		
 		Packet::free(p);
 	}
+	
+	else if(malicious == true) {
+
+		assert(rq->rq_dst == rt->rt_dst);
+		seqno = max(seqno, rq->rq_dst_seqno)+1000;
+
+		sendReply(rq->rq_src,           // IP Destination
+			     1,                    // Hop Count
+			     rq->rq_dst,                // Dest IP Address
+			     seqno,                // Dest Sequence Num
+			     MY_ROUTE_TIMEOUT,     // Lifetime
+			     rq->rq_timestamp,
+			     ih->saddr(),             // nexthop
+			     rq->rq_bcast_id,         // broadcast id to identify this route discovery
+			     ih->saddr());    // timestamp*/
+
+		Packet::free(p);
+ 	}
+	
 	/* I have a fresh route entry for RREQ destination - so send RREP */
 	else if ( rt &&
 				 (rt->rt_flags == RTF_UP) &&
@@ -1413,12 +1444,10 @@ AOMDV::forward(aomdv_rt_entry *rt, Packet *p, double delay) {
 	struct hdr_ip *ih = HDR_IP(p);
 	
 	// -----------------------------------------------------------------
-	// adicionado por alex cassinelli - Caminho Secundário
+	// adicionado por alex cassinelli
 	Packet *new_packet = p->copy();
 	struct hdr_cmn *new_ch = HDR_CMN(new_packet);
 	struct hdr_ip *new_ih = HDR_IP(new_packet);
-	//FILE *fp;
-	//fp = fopen("razão.txt", "a");
 	// -----------------------------------------------------------------
 	
 	if(ih->ttl_ == 0) {
@@ -1450,7 +1479,7 @@ AOMDV::forward(aomdv_rt_entry *rt, Packet *p, double delay) {
 		path->expire = CURRENT_TIME + ACTIVE_ROUTE_TIMEOUT;
 		
 		// -----------------------------------------------------------------
-		// adicionado por alex cassinelli - Caminho Secundário
+		// adicionado por alex cassinelli
 		if(rt->rt_num_paths_ > 1)
 		{
 			
@@ -1522,7 +1551,7 @@ AOMDV::forward(aomdv_rt_entry *rt, Packet *p, double delay) {
 }
 
 // -----------------------------------------------------------------
-// adicionado por alex cassinelli - Caminho Secundário
+// adicionado por alex cassinelli
 void
 AOMDV::sendRequest(nsaddr_t dst) {
 	aomdv_rt_entry *rt = rtable.rt_lookup(dst);
@@ -1532,18 +1561,13 @@ AOMDV::sendRequest(nsaddr_t dst) {
 	
 	double delay = 0.05;
 	
-	//DFSTimer* dfstimer = new DFSTimer(this);
-	
 	TAILQ_FOREACH(fv, &fv_cabeca, fv_link)
 	{
-	
-		// Allocate a RREQ packet 
+		//Allocate a RREQ packet 
 		Packet *p = Packet::alloc();
 		struct hdr_cmn *ch = HDR_CMN(p);
 		struct hdr_ip *ih = HDR_IP(p);
 		struct hdr_aomdv_request *rq = HDR_AOMDV_REQUEST(p);
-		
-		
 		// Fill out the RREQ packet 
 		// ch->uid() = 0;
 		ch->ptype() = PT_AOMDV;
@@ -1575,6 +1599,7 @@ AOMDV::sendRequest(nsaddr_t dst) {
 		Scheduler::instance().schedule(target_, p, delay);
 	}
 }
+// -----------------------------------------------------------------
 
 // AOMDV code
 void
@@ -1623,7 +1648,6 @@ AOMDV::sendReply(nsaddr_t ipdst, u_int32_t hop_count, nsaddr_t rpdst,
 	Scheduler::instance().schedule(target_, p, 0.);
 	
 }
-// -----------------------------------------------------------------
 
 void
 AOMDV::sendError(Packet *p, bool jitter) {
@@ -1753,15 +1777,14 @@ AOMDV::nb_insert(nsaddr_t id) {
 		// CHANGE
 		nb->nb_expire = CURRENT_TIME + (HELLO_INTERVAL * ALLOWED_HELLO_LOSS);
 	}
-
 	// ------------------------------------------------------------------
-	// adicionado por alex cassinelli - fila_vizinhos
+	// adicionado por alex cassinelli
 	fv_insere(id);
 	// ------------------------------------------------------------------
 }
 
 // ------------------------------------------------------------------
-// adicionado por alex cassinelli - fila_vizinhos
+// adicionado por alex cassinelli
 void
 AOMDV::fv_insere(nsaddr_t id)
 {
@@ -1774,19 +1797,6 @@ AOMDV::fv_insere(nsaddr_t id)
 		
 		TAILQ_INSERT_TAIL(&fv_cabeca, fv, fv_link);
 	}
-}
-
-void
-AOMDV::nb_print(nsaddr_t id) {
-	AOMDV_Neighbor *nb = nbhead.lh_first;
-	int i = 1;
-	
-	for(; nb; nb = nb->nb_link.le_next) {
-		if(nb->nb_addr == id) continue;
-		printf("Vizinho %d: %d\n", i, nb->nb_addr);
-		i++;
-	}
-	printf("\n");
 }
 // ------------------------------------------------------------------
 
@@ -1801,7 +1811,7 @@ AOMDV::nb_lookup(nsaddr_t id) {
 }
 
 // ------------------------------------------------------------------
-// adicionado por alex cassinelli - fila_vizinhos
+// adicionado por alex cassinelli
 Fila_Vizinhos*
 AOMDV::fv_lookup(nsaddr_t id)
 {
@@ -1813,28 +1823,6 @@ AOMDV::fv_lookup(nsaddr_t id)
 			break;
 	}
 	return fv;
-}
-
-nsaddr_t
-AOMDV::fv_retorna_ultimo()
-{
-	Fila_Vizinhos *fv = NULL;
-	nsaddr_t endereco = -1;
-	//printf("O cabeça da fila é: %d\n", index);
-	if(!TAILQ_EMPTY(&fv_cabeca))
-	{
-		fv = TAILQ_LAST(&fv_cabeca, fv_ncache);
-		if(fv != NULL)
-		{		
-			endereco = fv->fv_endereco;
-			TAILQ_REMOVE(&fv_cabeca, fv, fv_link);
-			free(fv);
-		}
-		
-	}
-	return endereco;
-	
-	//printf("cabeca é: %d\n", fv->fv_endereco);
 }
 
 void
