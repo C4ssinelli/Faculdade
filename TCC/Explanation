@@ -1,1 +1,10 @@
+  These are the AOMDV protocol codes, as implemented by NS-2. As part of my graduation project,
+it was necessary to alter the original code. My project has the objective of verifying an alternative to avoid
+the DoS consequences of Black Hole Attacks, a cyber attack that targets Mobile Ad hoc Networks (MANET).
 
+  Firstly, a brief context: AOMDV is an ad hoc routing protocol for MANETs. Its main function is finding
+the route for communication between nodes. It is a protocol based on BFS, sendo Route Request Packets to all
+nearby nodes simultaneously. After discovering the route, it chooses the best path and sends the data packets
+
+  The intention of modifications is converting AOMDC to a DFS-based protocol, not only that, it is supposed to
+send packets to two routes simultaneously, avoiding the DoS of Black Hole Attacks.
