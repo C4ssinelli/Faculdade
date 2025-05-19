@@ -1,1 +1,2 @@
-  This directory holds the codes responsible for generating the experiment environments.
+  This directory holds the codes responsible for generating the experiment environments and the
+.csv files holding the data collected.
