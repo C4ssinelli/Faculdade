@@ -9,10 +9,10 @@ load("GSW.sage")
 
 # -----------------------------------------------------------------------------------------------
 # Funções para representação em bits e polinomialização
-def int_to_bits(x, k):
+def int_para_bits(x, k):
     return [(x >> i) & 1 for i in range(k)]
 
-def bits_to_poly(bits):
+def bits_para_poly(bits):
     return Zx(bits)   # Zx já cria o polinômio com coeficientes adequados
 # -----------------------------------------------------------------------------------------------
 
