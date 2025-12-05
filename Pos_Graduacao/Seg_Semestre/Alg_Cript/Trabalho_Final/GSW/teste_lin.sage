@@ -205,7 +205,7 @@ def testar(nome_csv, l, M):
 
 #M2  = np.array([0, 1, 2, 3])
 #M8  = np.arange(256)
-M10 = np.arange(1024)
+#M10 = np.arange(1024)
 #M20 = np.arange(1048576)
 
 #testar("resultados_linear_4.csv",        2,  M2)   # parâmetros recomendados: n=512, q=2^15, sigma=3.2, B=2
