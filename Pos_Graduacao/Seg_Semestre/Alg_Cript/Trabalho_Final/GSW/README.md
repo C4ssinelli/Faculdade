@@ -1,5 +1,6 @@
 Esta pasta contém os códigos referentes aos testes com o esquema GSW. 
-Os códigos a seguir foram retirados de: Pereira, H. and Morais, E. (2021). Introduçãoo à criptografia completamente homomórfica com implementaçãoo em Sage, pages 1–50
+Os códigos a seguir foram retirados de: 
+Pereira, H. and Morais, E. (2021). Introduçãoo à criptografia completamente homomórfica com implementaçãoo em Sage, pages 1–50
 
 Códigos:
   - utils.sage
