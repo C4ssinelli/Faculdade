@@ -54,7 +54,7 @@ def executar_teste(l, M, gsw, ruido_writer, teste_id):
                 noise, time.time() - t2_start, f"onehot={i}"
             ])
 
-    # cifrar matriz M
+    # cifrar vetor M
     cipher_M = []
     for i in range(n):                      # Polinomialização e criptografação
         bits = int_to_bits(int(M[i]), l)
