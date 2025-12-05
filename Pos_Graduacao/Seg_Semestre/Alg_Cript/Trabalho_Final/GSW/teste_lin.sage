@@ -110,7 +110,6 @@ def executar_teste(l, M, gsw, ruido_writer, teste_id):
 
     assert dec == M[ele_des1]
 
-    # ruído final
     expected_final = bits_to_poly(int_to_bits(int(M[ele_des1]), l))
     final_noise = gsw.get_noise(res, expected_final)
 
